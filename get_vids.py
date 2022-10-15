@@ -1,7 +1,7 @@
 import yaml
 import mysql.connector
 
-def my_mysql(path):
+def get_vids():
 
     with open('db_config.yaml', 'r') as f:
         db_config = yaml.safe_load(f.read())
@@ -16,10 +16,15 @@ def my_mysql(path):
 
     mycursor = db.cursor()
 
-    sql = "INSERT INTO videos (path) VALUES (%s)"
+    videos_list = []
 
-    val = [path]
-    mycursor.execute(sql, val)
+    sql = "SELECT path FROM videos;"
 
-    db.commit()
-    db.close()
+    mycursor.execute(sql)
+
+    videos = mycursor.fetchall()
+
+    for video in videos:
+        videos_list.append(video)
+
+    return videos_list

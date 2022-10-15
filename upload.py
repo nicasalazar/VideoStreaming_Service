@@ -5,18 +5,15 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'static/uploads/'
-PORT = 5010
+PORT = 5001
 
 app = Flask(__name__)
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 	
-@app.route('/upload')
-def upload_form():
-	return render_template('upload.html')
 
-@app.route('/', methods=['POST'])
+@app.route('/home', methods=['POST'])
 def upload_video():
 	if 'file' not in request.files:
 		flash('No file part')

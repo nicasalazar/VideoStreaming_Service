@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template
 from flask import flash, request, redirect,session
 
@@ -8,9 +9,16 @@ app.secret_key = 'SuperSecret'
 
 user = {"username": "admin", "password": "password"}
 
+<<<<<<< HEAD
 @app.route("/")
 def home():
     return redirect('/login')
+=======
+@app.route("/", methods = ['POST', 'GET'])
+def index():
+    return render_template("login.html")
+
+>>>>>>> 1a0913f (changed port)
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
@@ -36,4 +44,4 @@ def dashboard():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=3001)

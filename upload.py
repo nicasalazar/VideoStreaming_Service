@@ -1,11 +1,12 @@
 import os
+from flask import Flask
 import urllib.request
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
-
-from flask import Flask
+app = Flask(__name__)
 
 UPLOAD_FOLDER = 'static/uploads/'
+PORT = 5010
 
 app = Flask(__name__)
 app.secret_key = "secret key"
@@ -38,4 +39,4 @@ def display_video(filename):
 	return redirect(url_for('static', filename='uploads/' + filename), code=301)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=PORT, debug=True)

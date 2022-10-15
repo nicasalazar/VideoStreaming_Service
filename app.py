@@ -1,10 +1,17 @@
 from flask import Flask, render_template
 from flask import flash, request, redirect,session
+from upload import upload_form
+
+
 
 app = Flask(__name__)
 app.secret_key = 'SuperSecret'
 
 user = {"username": "admin", "password": "password"}
+
+@app.route("/")
+def home():
+    return redirect('/login')
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
@@ -14,7 +21,7 @@ def login():
         if username == user['username'] and password == user['password']:
             
             session['user'] = username
-            return redirect('/dashboard')
+            return redirect('http://localhost:5010/upload')
 
         return "<h1>Wrong username or password</h1>"    #if the username or password does not matches 
 

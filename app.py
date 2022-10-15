@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask import flash, request, redirect,session
-from upload import upload_form
 
 
 

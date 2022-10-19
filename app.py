@@ -22,7 +22,7 @@ def login():
         if username == user['username'] and password == user['password']:
             
             session['user'] = username
-            return redirect('http://localhost:5010/upload')
+            return redirect('http://localhost:5001/upload')
 
         return "<h1>Wrong username or password</h1>"    #if the username or password does not matches 
 
@@ -38,4 +38,4 @@ def dashboard():
 
 
 if __name__ == '__main__':
-    app.run(port=3001)
+    app.run(port=5000)

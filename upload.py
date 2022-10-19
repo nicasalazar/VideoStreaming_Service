@@ -1,38 +1,34 @@
-import os
-import urllib.request
-from flask import Flask, flash, request, redirect, url_for, render_template, session
+from flask import Flask, request, Response, render_template
 from werkzeug.utils import secure_filename
+
+from db import db_init, db
+from models import Vid
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vid.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db_init(app)
 
-UPLOAD_FOLDER = 'static/uploads/'
-PORT = 5001
+@app.route('/upload')
+def hello_world():
+    return render_template('upload.html')
 
-app = Flask(__name__)
-app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-	
+@app.route('/upload', methods=['POST'])
+def upload():
+    video = request.files['video']
+    if not video:
+        return 'No video uploaded!', 400
 
-@app.route('/home', methods=['POST'])
-def upload_video():
-	if 'file' not in request.files:
-		flash('No file part')
-		return redirect(request.url)
-	file = request.files['file']
-	if file.filename == '':
-		flash('No image selected for uploading')
-		return redirect(request.url)
-	else:
-		filename = secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-		#print('upload_video filename: ' + filename)
-		flash('Video successfully uploaded and displayed below')
-		return render_template('upload.html', filename=filename)
+    filename = secure_filename(video.filename)
+    mimetype = video.mimetype
+    if not filename or not mimetype:
+        return 'Bad upload!', 400
 
-@app.route('/display/<filename>')
-def display_video(filename):
-	#print('display_video filename: ' + filename)
-	return redirect(url_for('static', filename='uploads/' + filename), code=301)
+    vid = Vid(vid=video.read(), name=filename, mimetype=mimetype)
+    db.session.add(vid)
+    db.session.commit()
 
-if __name__ == "__main__":
-    app.run(port=PORT, debug=True)
+    return 'Video Uploaded!', 200
+
+if __name__ == '__main__':
+    app.run(port=5001)

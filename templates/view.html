@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+</head>
+<body>
+
+<table style="margin-left: 20px;"></table>
+    <tr>
+        {%for Vid in query%}
+    
+        <td>
+            {{Vid.id}} {{Vid.vid}}
+         </td>
+         </tr>
+        {%endfor%}
+
+     </table>
+ 
+</body>
+</html>
